@@ -1,0 +1,133 @@
+// This is a simple REPL for the Simple 3 language.
+// It uses Jison to parse the grammar and then executes the AST.
+
+// Load the Jison grammar
+const grammar = require('./grammar.jison');
+
+// Create a parser instance
+const parser = new grammar.parser();
+
+// Global environment for variables
+const env = {};
+
+// Function to evaluate an expression
+function evaluateExpression(expression, env) {
+  switch (expression.type) {
+    case 'id':
+      return env[expression.value];
+    case 'number':
+      return parseFloat(expression.value);
+    case 'string':
+      return expression.value.slice(1, -1); // Remove quotes
+    case '+':
+      return evaluateExpression(expression.left, env) + evaluateExpression(expression.right, env);
+    case '-':
+      return evaluateExpression(expression.left, env) - evaluateExpression(expression.right, env);
+    case '&':
+      return evaluateExpression(expression.left, env) && evaluateExpression(expression.right, env);
+    case '*':
+      return evaluateExpression(expression.left, env) * evaluateExpression(expression.right, env);
+    case '/':
+      return evaluateExpression(expression.left, env) / evaluateExpression(expression.right, env);
+    case '>':
+      return evaluateExpression(expression.left, env) > evaluateExpression(expression.right, env);
+    case '<':
+      return evaluateExpression(expression.left, env) < evaluateExpression(expression.right, env);
+    case '<=':
+      return evaluateExpression(expression.left, env) <= evaluateExpression(expression.right, env);
+    case '>=':
+      return evaluateExpression(expression.left, env) >= evaluateExpression(expression.right, env);
+    case '==':
+      return evaluateExpression(expression.left, env) === evaluateExpression(expression.right, env);
+    case '<>':
+      return evaluateExpression(expression.left, env) !== evaluateExpression(expression.right, env);
+    case '-': // Unary negation
+      return -evaluateExpression(expression.value, env);
+    case 'function_call':
+      const args = expression.args.map(arg => evaluateExpression(arg, env));
+      return env[expression.id](...args);
+    default:
+      throw new Error(`Unknown expression type: ${expression.type}`);
+  }
+}
+
+// Function to execute a statement
+function executeStatement(statement, env) {
+  switch (statement.type) {
+    case 'print':
+      console.log(evaluateExpression(statement.expression, env));
+      break;
+    case 'print_read':
+      const value = prompt(evaluateExpression(statement.expression, env));
+      env[statement.id] = value;
+      break;
+    case 'assignment':
+      env[statement.id] = evaluateExpression(statement.expression, env);
+      break;
+    case 'loop':
+      while (evaluateExpression(statement.expression, env)) {
+        statement.statements.forEach(s => executeStatement(s, env));
+      }
+      break;
+    case 'for':
+      executeStatement(statement.init, env);
+      while (evaluateExpression(statement.condition, env)) {
+        statement.statements.forEach(s => executeStatement(s, env));
+        executeStatement(statement.update, env);
+      }
+      break;
+    case 'while':
+      while (evaluateExpression(statement.expression, env)) {
+        statement.statements.forEach(s => executeStatement(s, env));
+      }
+      break;
+    case 'if':
+      if (evaluateExpression(statement.expression, env)) {
+        statement.statements.forEach(s => executeStatement(s, env));
+      }
+      break;
+    case 'if_else':
+      if (evaluateExpression(statement.expression, env)) {
+        statement.thenStatements.forEach(s => executeStatement(s, env));
+      } else {
+        statement.elseStatements.forEach(s => executeStatement(s, env));
+      }
+      break;
+    case 'function':
+      env[statement.id] = (...args) => {
+        const localEnv = { ...env };
+        statement.params.forEach((param, index) => {
+          localEnv[param] = args[index];
+        });
+        statement.statements.forEach(s => executeStatement(s, localEnv));
+      };
+      break;
+    case 'return':
+      return evaluateExpression(statement.expression, env);
+    default:
+      throw new Error(`Unknown statement type: ${statement.type}`);
+  }
+}
+
+// Main REPL loop
+function repl() {
+  const input = prompt('> ');
+  if (input === null) {
+    return;
+  }
+  try {
+    const ast = parser.parse(input);
+    ast.statements.forEach(statement => {
+      const result = executeStatement(statement, env);
+      if (result !== undefined) {
+        console.log(result);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+  repl();
+}
+
+// Start the REPL
+repl();
