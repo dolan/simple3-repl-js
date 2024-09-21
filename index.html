@@ -21,10 +21,14 @@
       flex-grow: 1;
       padding: 5px;
       border: 1px solid #ccc;
+      resize: vertical; /* Allow vertical resizing */
+      min-height: 100px; /* Set a minimum height */
     }
     #output {
       margin-top: 10px;
       white-space: pre-wrap;
+      overflow-y: auto; /* Add vertical scrollbar */
+      height: 200px; /* Set a height for the output area */
     }
   </style>
 </head>
@@ -32,18 +36,27 @@
   <h1>Simple 3 REPL</h1>
   <div id="repl-container">
     <div id="input-area">
-      <input type="text" id="input" placeholder="Enter Simple 3 code...">
+      <textarea id="input" placeholder="Enter Simple 3 code..."></textarea>
       <button id="run-button">Run</button>
     </div>
     <div id="output"></div>
   </div>
-  <script src="grammar.js"></script> <script src="repl.js"></script>
+  <script src="grammar.js"></script>
+  <script src="repl.js"></script>
   <script>
     // Wait for the DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', () => {
       const input = document.getElementById('input');
       const runButton = document.getElementById('run-button');
       const output = document.getElementById('output');
+
+      // Handle Command + Enter keypress
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+          event.preventDefault(); // Prevent default newline behavior
+          runButton.click(); // Trigger the run button
+        }
+      });
 
       runButton.addEventListener('click', () => {
         const code = input.value;

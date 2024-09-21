@@ -109,23 +109,26 @@ function executeStatement(statement, env) {
 
 // Main REPL loop
 function repl() {
-  const input = prompt('> ');
-  if (input === null) {
-    return;
-  }
+  const input = document.getElementById('input');
+  const output = document.getElementById('output');
+
+  const code = input.value;
   try {
-    const ast = parser.parse(input);
+    const ast = parser.parse(code);
     ast.statements.forEach(statement => {
       const result = executeStatement(statement, env);
       if (result !== undefined) {
-        console.log(result);
+        output.textContent += result + '\n';
       }
     });
   } catch (error) {
-    console.error(error);
+    output.textContent += error + '\n';
   }
-  repl();
+  input.value = ''; // Clear the input field
 }
 
 // Start the REPL
-repl();
+document.addEventListener('DOMContentLoaded', () => {
+  const runButton = document.getElementById('run-button');
+  runButton.addEventListener('click', repl);
+});
