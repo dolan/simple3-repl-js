@@ -1,11 +1,9 @@
 // This is a simple REPL for the Simple 3 language.
 // It uses Jison to parse the grammar and then executes the AST.
 
-// Load the Jison grammar
-const grammar = require('./grammar.jison');
-
-// Create a parser instance
-const parser = new grammar.parser();
+// Load the Jison grammar (using a script tag in index.html)
+// This assumes grammar.jison is compiled to grammar.js
+// using `jison grammar.jison`
 
 // Global environment for variables
 const env = {};
