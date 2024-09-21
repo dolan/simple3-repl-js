@@ -1522,4 +1522,7 @@ var grammar = {
         "string": 5
       },
       {
-        "id
+        "id": 5
+      },
+      {
+        "print": 6
