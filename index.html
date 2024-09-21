@@ -39,24 +39,27 @@
   </div>
   <script src="repl.js"></script>
   <script>
-    const input = document.getElementById('input');
-    const runButton = document.getElementById('run-button');
-    const output = document.getElementById('output');
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('input');
+      const runButton = document.getElementById('run-button');
+      const output = document.getElementById('output');
 
-    runButton.addEventListener('click', () => {
-      const code = input.value;
-      try {
-        const ast = parser.parse(code);
-        ast.statements.forEach(statement => {
-          const result = executeStatement(statement, env);
-          if (result !== undefined) {
-            output.textContent += result + '\n';
-          }
-        });
-      } catch (error) {
-        output.textContent += error + '\n';
-      }
-      input.value = ''; // Clear the input field
+      runButton.addEventListener('click', () => {
+        const code = input.value;
+        try {
+          const ast = parser.parse(code);
+          ast.statements.forEach(statement => {
+            const result = executeStatement(statement, env);
+            if (result !== undefined) {
+              output.textContent += result + '\n';
+            }
+          });
+        } catch (error) {
+          output.textContent += error + '\n';
+        }
+        input.value = ''; // Clear the input field
+      });
     });
   </script>
 </body>
