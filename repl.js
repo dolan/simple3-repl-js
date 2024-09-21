@@ -11,6 +11,19 @@ const env = {};
 // Define the parser globally
 let parser;
 
+// Function to initialize the parser
+function initializeParser() {
+  if (typeof grammar === 'object' && typeof grammar.parser === 'object') {
+    // If grammar.parser is an object (Jison 0.4.18+)
+    parser = new grammar.Parser();
+  } else if (typeof grammar === 'function') {
+    // If grammar is a function (older Jison versions)
+    parser = new grammar();
+  } else {
+    throw new Error('Unable to initialize parser. Check Jison output.');
+  }
+}
+
 // Function to evaluate an expression
 function evaluateExpression(expression, env) {
   switch (expression.type) {
@@ -134,6 +147,11 @@ function repl() {
 document.addEventListener('DOMContentLoaded', () => {
   const runButton = document.getElementById('run-button');
   // Initialize the parser after the DOM is loaded
-  parser = new grammar.parser();
+  try {
+    initializeParser();
+    console.log('Parser initialized successfully');
+  } catch (error) {
+    console.error('Error initializing parser:', error);
+  }
   runButton.addEventListener('click', repl);
 });
