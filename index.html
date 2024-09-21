@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple 3 REPL</title>
+  <style>
+    body {
+      font-family: monospace;
+    }
+    #repl-container {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 20px;
+    }
+    #input-area {
+      display: flex;
+      align-items: center;
+    }
+    #input {
+      flex-grow: 1;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+    #output {
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple 3 REPL</h1>
+  <div id="repl-container">
+    <div id="input-area">
+      <input type="text" id="input" placeholder="Enter Simple 3 code...">
+      <button id="run-button">Run</button>
+    </div>
+    <div id="output"></div>
+  </div>
+  <script src="repl.js"></script>
+  <script>
+    const input = document.getElementById('input');
+    const runButton = document.getElementById('run-button');
+    const output = document.getElementById('output');
+
+    runButton.addEventListener('click', () => {
+      const code = input.value;
+      try {
+        const ast = parser.parse(code);
+        ast.statements.forEach(statement => {
+          const result = executeStatement(statement, env);
+          if (result !== undefined) {
+            output.textContent += result + '\n';
+          }
+        });
+      } catch (error) {
+        output.textContent += error + '\n';
+      }
+      input.value = ''; // Clear the input field
+    });
+  </script>
+</body>
+</html>
