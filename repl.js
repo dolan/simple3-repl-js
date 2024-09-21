@@ -8,6 +8,9 @@
 // Global environment for variables
 const env = {};
 
+// Define the parser globally
+let parser;
+
 // Function to evaluate an expression
 function evaluateExpression(expression, env) {
   switch (expression.type) {
@@ -130,5 +133,7 @@ function repl() {
 // Start the REPL
 document.addEventListener('DOMContentLoaded', () => {
   const runButton = document.getElementById('run-button');
+  // Initialize the parser after the DOM is loaded
+  parser = new grammar.parser();
   runButton.addEventListener('click', repl);
 });
