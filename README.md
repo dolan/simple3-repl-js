@@ -5,7 +5,12 @@ Long ago and far away, I wrote an [article](https://www.codeproject.com/Articles
 This is an attempt to recreate the same language with an in-browser REPL using coder tools 'aider-chat' and Various LLMs, including:
 * Gemini 1.5 Flash
 * Github Copilot Pro
+* Claude 3.5 Sonnet
 
+## Demo
+There is a demo of this REPL working in [Github Pages](https://dolan.github.io/simple3-repl-js/index.html)
+
+## The Grammar
 The original grammar in it's full Gold Parser EBNF notation is available in the prompt (and right here below, for fun)
 ```
 "Name"    = 'Simple'
