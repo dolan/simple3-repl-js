@@ -1,10 +1,11 @@
 // Wrap the entire content of interpreter.js in a function to avoid polluting the global scope
 (function(window) {
     class Interpreter {
-      constructor(outputCallback) {
+      constructor(outputCallback, inputCallback) {
         this.variables = {};
         this.functions = {};
         this.output = outputCallback || console.log;
+        this.input = inputCallback || prompt;
       }
   
       interpret(ast) {
@@ -32,8 +33,9 @@
             this.output(this.evaluateExpression(statement.expression));
             break;
           case 'PrintRead':
-            this.output(this.evaluateExpression(statement.expression));
-            this.variables[statement.variable] = prompt("Enter a value:");
+            const promptMessage = this.evaluateExpression(statement.expression);
+            this.output(promptMessage);
+            this.variables[statement.variable] = this.input(promptMessage);
             break;
           case 'Assignment':
             this.variables[statement.variable] = this.evaluateExpression(statement.expression);
