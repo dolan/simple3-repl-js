@@ -22,7 +22,7 @@
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             padding: 10px;
-            white-space: pre-wrap;
+            overflow-y: auto; /* Enable vertical scrolling */
         }
         /* Modal styles */
         #inputModal {
@@ -80,7 +80,7 @@ y = 3
 print x + y
     </textarea>
     <button id="run">Run</button>
-    <div id="output"></div>
+    <button id="clear">Clear</button> <div id="output"></div>
 
     <!-- Modal -->
     <div id="inputModal">
@@ -99,6 +99,7 @@ print x + y
         const inputElement = document.getElementById('input');
         const outputElement = document.getElementById('output');
         const runButton = document.getElementById('run');
+        const clearButton = document.getElementById('clear'); // Get the clear button element
         const inputModal = document.getElementById('inputModal');
         const inputModalInput = document.getElementById('inputModalInput');
         const inputModalButton = document.getElementById('inputModalButton');
@@ -141,6 +142,10 @@ print x + y
                 appendOutput('Error: ' + error.message);
                 console.error(error); // Log the full error to the console for debugging
             }
+        });
+
+        clearButton.addEventListener('click', () => {
+            outputElement.textContent = ''; // Clear the output
         });
     </script>
 </body>
