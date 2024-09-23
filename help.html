@@ -128,6 +128,7 @@ end
 
     <pre>
 function greet(name)
+begin
     print "Hello, " & name
 end
 
@@ -140,6 +141,7 @@ greet("Alice")
 
     <pre>
 function factorial(n)
+begin
     if n == 0 then
         return 1
     else
@@ -154,6 +156,7 @@ print factorial(5)
 
     <pre>
 function sing(n)
+begin
     if n == 0 then
         print "No more bottles of beer on the wall, no more bottles of beer."
         print "Go to the store and buy some more, 99 bottles of beer on the wall."
@@ -161,8 +164,8 @@ function sing(n)
         print n & " bottles of beer on the wall, " & n & " bottles of beer."
         print "Take one down and pass it around, " & (n - 1) & " bottles of beer on the wall."
         sing(n - 1)
-    end;
-end;
+    end
+end
 
 sing(99)
 </pre>
