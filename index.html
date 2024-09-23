@@ -78,6 +78,19 @@ print "Hello, World!"
 x = 5
 y = 3
 print x + y
+
+print "Enter your name: " read name
+print "Hello, " & name
+
+print name & ", I'm going to sing to you."
+for(i = 99; i > 0; i = i - 1) do
+    if i == 1 then
+        print "1 bottle of beer on the wall, 1 bottle of beer."
+        return
+    else
+      print i & " bottles of beer on the wall, " & i & " bottles of beer."
+    end
+end
     </textarea>
     <button id="run">Run</button>
     <button id="clear">Clear</button> <div id="output"></div>
