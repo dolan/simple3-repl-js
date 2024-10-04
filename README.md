@@ -1,6 +1,8 @@
 # Simple 3 - a useless programming language implemented in Javascript
 ## for testing code generation tools.
 
+This is the ideal programming langauge for people who know that programming is overrated.
+
 Long ago and far away, I wrote an [article](https://www.codeproject.com/Articles/129965/The-Whole-Shebang-Building-your-own-general-purpos) about making a langauge using Devin Cook's Gold Parser Builder in C#.
 This is an attempt to recreate the same language with an in-browser REPL using coder tools 'aider-chat' and Various LLMs, including:
 * Gemini 1.5 Flash
